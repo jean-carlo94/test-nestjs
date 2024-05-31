@@ -19,6 +19,11 @@ export class TeachersService {
     this.Errors = [];
   }
 
+  /**
+   * Finds all teachers with pagination.
+   * @param {PageOptionsDto} pageOptionsDto - The pagination options.
+   * @returns {Promise<{ data: TeacherDto[]; meta: PageMetaDto }>} The paginated teachers data and metadata.
+   */
   async findAll(
     pageOptionsDto: PageOptionsDto,
   ): Promise<{ data: TeacherDto[]; meta: PageMetaDto }> {
@@ -28,11 +33,21 @@ export class TeachersService {
     return { data: mapper, ...meta };
   }
 
+  /**
+   * Finds a single teacher by ID.
+   * @param {number} id - The ID of the teacher.
+   * @returns {Promise<TeacherDto>} The teacher data.
+   */
   async findOne(id: number): Promise<TeacherDto> {
     const teacher = await this.repository.findOne(id);
     return this.classMapper.map(teacher, Teacher, TeacherDto);
   }
 
+  /**
+   * Creates a new teacher.
+   * @param {CreateTeacherDto} createTeacherDto - The data to create the teacher.
+   * @returns {Promise<TeacherDto>} The created teacher data.
+   */
   async create(createTeacherDto: CreateTeacherDto): Promise<TeacherDto> {
     const entity = this.classMapper.map(
       createTeacherDto,
@@ -46,7 +61,16 @@ export class TeachersService {
     return this.classMapper.map(teacher, Teacher, TeacherDto);
   }
 
-  async update(id: number, updateTeacherDto: UpdateTeacherDto) {
+  /**
+   * Updates an existing teacher.
+   * @param {number} id - The ID of the teacher to update.
+   * @param {UpdateTeacherDto} updateTeacherDto - The data to update the teacher.
+   * @returns {Promise<TeacherDto>} The updated teacher data.
+   */
+  async update(
+    id: number,
+    updateTeacherDto: UpdateTeacherDto,
+  ): Promise<TeacherDto> {
     updateTeacherDto.id = id;
     const entity = this.classMapper.map(
       updateTeacherDto,
@@ -59,23 +83,44 @@ export class TeachersService {
     return this.classMapper.map(teacher, Teacher, TeacherDto);
   }
 
-  async remove(id: number) {
+  /**
+   * Removes a teacher by ID.
+   * @param {number} id - The ID of the teacher to remove.
+   * @returns {Promise<void>}
+   */
+  async remove(id: number): Promise<void> {
     await this.repository.remove(id);
   }
 
+  /**
+   * Validates the data for creating a new teacher.
+   * @param {CreateTeacherDto} createTeacherDto - The data to validate.
+   * @returns {Promise<void>}
+   */
   async validateInsert(createTeacherDto: CreateTeacherDto): Promise<void> {
-    const exist = await this.repository.searchExist(createTeacherDto.email);
+    const exist = await this.repository.searchExist(
+      createTeacherDto.email.toLowerCase(),
+    );
 
     if (exist) {
       this.Errors.push('This email has already been used');
     }
   }
 
+  /**
+   * Validates the data for updating an existing teacher.
+   * @param {number} id - The ID of the teacher to update.
+   * @param {UpdateTeacherDto} updateTeacherDto - The data to validate.
+   * @returns {Promise<void>}
+   */
   async validateUpdate(
     id: number,
     updateTeacherDto: UpdateTeacherDto,
   ): Promise<void> {
-    const exist = await this.repository.searchExist(updateTeacherDto.email, id);
+    const exist = await this.repository.searchExist(
+      updateTeacherDto.email.toLowerCase(),
+      id,
+    );
 
     if (exist) {
       this.Errors.push('This email has already been used');

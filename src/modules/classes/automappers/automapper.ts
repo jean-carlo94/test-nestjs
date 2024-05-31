@@ -11,6 +11,10 @@ export class ClassesProfile extends AutomapperProfile {
     super(mapper);
   }
 
+  /**
+   * Defines the mapping profile for the Teacher entity and its DTOs.
+   * @returns {(mapper: Mapper) => void} The mapping configuration function.
+   */
   override get profile() {
     return (mapper) => {
       //Entity To Dto

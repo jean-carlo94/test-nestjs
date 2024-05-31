@@ -31,6 +31,11 @@ export class ClassesController {
     private readonly studentsService: StudentsService,
   ) {}
 
+  /**
+   * Retrieves all classes with pagination.
+   * @param {PageOptionsDto} pageOptionsDto - Pagination options.
+   * @returns {Promise<{ data: ClassDto[]; meta: PageMetaDto }>} Paginated class data and metadata.
+   */
   @Get()
   async findAll(
     @Query() pageOptionsDto: PageOptionsDto,
@@ -38,6 +43,12 @@ export class ClassesController {
     return await this.classesService.findAll(pageOptionsDto);
   }
 
+  /**
+   * Retrieves a class by its ID.
+   * @param {string} id - Class ID.
+   * @returns {Promise<ClassDto>} The class data.
+   * @throws {NotFoundException} If class is not found.
+   */
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ClassDto> {
     const classEntity = await this.classesService.findOne(+id);
@@ -49,6 +60,12 @@ export class ClassesController {
     return classEntity;
   }
 
+  /**
+   * Creates a new class.
+   * @param {CreateClassDto} createClassDto - Class data.
+   * @returns {Promise<ClassDto>} The created class data.
+   * @throws {BadRequestException} If validation fails.
+   */
   @Post()
   async create(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
     await this.classesService.validateInsert(createClassDto);
@@ -60,6 +77,14 @@ export class ClassesController {
     return await this.classesService.create(createClassDto);
   }
 
+  /**
+   * Updates an existing class by its ID.
+   * @param {string} id - Class ID.
+   * @param {UpdateClassDto} updateClassDto - Updated class data.
+   * @returns {Promise<ClassDto>} The updated class data.
+   * @throws {NotFoundException} If class is not found.
+   * @throws {BadRequestException} If validation fails.
+   */
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -80,6 +105,12 @@ export class ClassesController {
     return await this.classesService.update(+id, updateClassDto);
   }
 
+  /**
+   * Deletes a class by its ID.
+   * @param {string} id - Class ID.
+   * @returns {Promise<void>}
+   * @throws {NotFoundException} If class is not found.
+   */
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
@@ -94,6 +125,13 @@ export class ClassesController {
     return;
   }
 
+  /**
+   * Assigns a teacher to a class by its ID.
+   * @param {string} id - Class ID.
+   * @param {UpdateTeacherDto} updateTeacherDto - Teacher data.
+   * @returns {Promise<void>}
+   * @throws {NotFoundException} If class or teacher is not found.
+   */
   @Post(':id/assign-teacher')
   @HttpCode(HttpStatus.NO_CONTENT)
   async assignTeacher(
@@ -116,6 +154,12 @@ export class ClassesController {
     return;
   }
 
+  /**
+   * Retrieves the teacher of a class by its ID.
+   * @param {string} id - Class ID.
+   * @returns {Promise<TeacherDto>} The teacher data.
+   * @throws {NotFoundException} If class is not found.
+   */
   @Get(':id/assign-teacher')
   async findTeacher(@Param('id') id: string) {
     const classEntity = await this.classesService.findOne(+id);
@@ -127,6 +171,13 @@ export class ClassesController {
     return await this.classesService.findTeacher(classEntity);
   }
 
+  /**
+   * Assigns a student to a class by its ID.
+   * @param {string} id - Class ID.
+   * @param {UpdateStudentDto} updateStudentDto - Student data.
+   * @returns {Promise<void>}
+   * @throws {NotFoundException} If class or student is not found.
+   */
   @Post(':id/assign-students')
   @HttpCode(HttpStatus.NO_CONTENT)
   async assignStudent(
@@ -149,6 +200,12 @@ export class ClassesController {
     return;
   }
 
+  /**
+   * Retrieves the students of a class by its ID.
+   * @param {string} id - Class ID.
+   * @returns {Promise<StudentDto[]>} The students data.
+   * @throws {NotFoundException} If class is not found.
+   */
   @Get(':id/assign-students')
   async findStudent(@Param('id') id: string) {
     const classEntity = await this.classesService.findOne(+id);

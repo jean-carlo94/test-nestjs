@@ -54,11 +54,19 @@ export class Class {
   @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
   updatedAt!: Date;
 
+  /**
+   * Convert name to lowercase before inserting the teacher entity.
+   * @returns {void}
+   */
   @BeforeInsert()
   checkFieldBeforeInsert() {
     this.name = this.name.toUpperCase();
   }
 
+  /**
+   * Convert name to lowercase before updating the teacher entity.
+   * @returns {void}
+   */
   @BeforeUpdate()
   checkFieldsBeforeUpdate() {
     this.checkFieldBeforeInsert();

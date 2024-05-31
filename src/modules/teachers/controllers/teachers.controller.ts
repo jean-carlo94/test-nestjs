@@ -22,6 +22,11 @@ import { CreateTeacherDto, TeacherDto, UpdateTeacherDto } from '../dto';
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
+  /**
+   * Retrieves a paginated list of teachers.
+   * @param {PageOptionsDto} pageOptionsDto - Pagination options.
+   * @returns {Promise<{ data: TeacherDto[]; meta: PageMetaDto }>} Paginated teachers data and metadata.
+   */
   @Get()
   async findAll(
     @Query() pageOptionsDto: PageOptionsDto,
@@ -29,6 +34,12 @@ export class TeachersController {
     return await this.teachersService.findAll(pageOptionsDto);
   }
 
+  /**
+   * Retrieves a teacher by ID.
+   * @param {string} id - The ID of the teacher.
+   * @returns {Promise<TeacherDto>} The teacher data.
+   * @throws {NotFoundException} If the teacher is not found.
+   */
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<TeacherDto> {
     const teacher = await this.teachersService.findOne(+id);
@@ -40,6 +51,12 @@ export class TeachersController {
     return teacher;
   }
 
+  /**
+   * Creates a new teacher.
+   * @param {CreateTeacherDto} createTeacherDto - The data to create the teacher.
+   * @returns {Promise<TeacherDto>} The created teacher data.
+   * @throws {BadRequestException} If there are validation errors.
+   */
   @Post()
   async create(
     @Body() createTeacherDto: CreateTeacherDto,
@@ -53,6 +70,14 @@ export class TeachersController {
     return await this.teachersService.create(createTeacherDto);
   }
 
+  /**
+   * Updates an existing teacher.
+   * @param {string} id - The ID of the teacher to update.
+   * @param {UpdateTeacherDto} updateTeacherDto - The data to update the teacher.
+   * @returns {Promise<TeacherDto>} The updated teacher data.
+   * @throws {NotFoundException} If the teacher is not found.
+   * @throws {BadRequestException} If there are validation errors.
+   */
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -73,6 +98,12 @@ export class TeachersController {
     return await this.teachersService.update(+id, updateTeacherDto);
   }
 
+  /**
+   * Deletes a teacher by ID.
+   * @param {string} id - The ID of the teacher to delete.
+   * @returns {Promise<void>}
+   * @throws {NotFoundException} If the teacher is not found.
+   */
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {

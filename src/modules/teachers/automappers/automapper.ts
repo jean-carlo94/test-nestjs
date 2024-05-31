@@ -10,6 +10,10 @@ export class TeacherProfile extends AutomapperProfile {
     super(mapper);
   }
 
+  /**
+   * Defines the mapping profile for the Teacher entity and its DTOs.
+   * @returns {(mapper: Mapper) => void} The mapping configuration function.
+   */
   override get profile() {
     return (mapper) => {
       //Entity To Dto
@@ -18,7 +22,7 @@ export class TeacherProfile extends AutomapperProfile {
       //Dto To Entity
       createMap(mapper, TeacherDto, Teacher);
 
-      //Create
+      //Create To Entity
       createMap(
         mapper,
         CreateTeacherDto,
@@ -26,7 +30,7 @@ export class TeacherProfile extends AutomapperProfile {
         forMember((dest) => dest.id, ignore()),
       );
 
-      //Update
+      //Update To Entity
       createMap(mapper, UpdateTeacherDto, Teacher);
     };
   }

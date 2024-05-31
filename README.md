@@ -22,52 +22,147 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Proyecto API con NestJS y TypeORM
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Este proyecto es una API desarrollada utilizando [NestJS](https://nestjs.com/) junto con [TypeORM](https://typeorm.io/). La API está diseñada para gestionar clases, estudiantes y profesores.
 
-## Installation
+## Estructura del Proyecto
 
-```bash
-$ pnpm install
+La estructura del proyecto es la siguiente:
+
+```
+  src/
+    ├── common/
+    │   ├── constants/
+    │   ├── dto/
+    │   ├── interfaces/
+    │   └── repositories/
+    ├── config/
+    │   └── database/
+    │       ├── config.data.source.ts
+    │       ├── entities.ts
+    │       └── index.ts
+    ├── modules/
+    │   ├── classes/
+    │   ├── students/
+    │   └── teachers/
+    │       ├── automappers/
+    │       ├── controllers/
+    │       ├── dto/
+    │       ├── entities/
+    │       ├── repositories/
+    │       └── services/
+    │       └── teachers.module.ts
+    ├── app.module.ts
+    └── main.ts
+  test/
+  .env
+  .eslintrc.js
+  .gitignore
+  .prettierrc
+  nest-cli.json
+  package.json
+  pnpm-lock.yaml
+  README.md
+  tsconfig.build.json
+  tsconfig.json
 ```
 
-## Running the app
+## Requisitos
+
+- Node.js (>=20.x)
+- PNPM (se recomienda en lugar de npm o yarn)
+
+## Configuración del Proyecto
+
+1. **Clona el repositorio:**
+
+   ```bash
+   git clone https://github.com/jean-carlo94/test-nestjs.git
+   cd test-nestjs
+   ```
+
+2. **Instala las dependencias:**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Configura las variables de entorno:**
+
+   Crea un archivo `.env` en la raíz del proyecto y configura las siguientes variables:
+
+   ```plaintext
+    PORT=3008
+    DB_NAME=nombre_base_datos
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_ROOT_PASSWORD=contraseña
+    DB_USERNAME=usuario
+    DB_PASSWORD=contraseña
+   ```
+
+## Ejecución del Proyecto
+
+1. **Compilar el proyecto:**
+
+   ```bash
+   pnpm run build
+   ```
+
+2. **Iniciar la aplicación:**
+
+   ```bash
+   pnpm run start
+   ```
+
+   Para ejecutar en modo de desarrollo con recarga en caliente:
+
+   ```bash
+   pnpm run start:dev
+   ```
+
+## Testing
+
+Para ejecutar los tests, utiliza el siguiente comando:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm run test
 ```
 
-## Test
+## Estructura de Carpetas
 
-```bash
-# unit tests
-$ pnpm run test
+- **common/**: Contiene constantes, DTOs, interfaces y repositorios comunes utilizados en todo el proyecto.
+- **config/**: Contiene la configuración de la base de datos.
+- **modules/**: Contiene los módulos de la aplicación (clases, estudiantes y profesores).
+- **test/**: Contiene las pruebas del proyecto.
 
-# e2e tests
-$ pnpm run test:e2e
+## Módulos
 
-# test coverage
-$ pnpm run test:cov
-```
+### Estructura de módulo
 
-## Support
+- **automappers/**: Contiene configuraciones para el mapeo automático de objetos.
+- **controllers/**: Contiene los controladores de la API relacionados.
+- **dto/**: Contiene los Data Transfer Objects relacionados.
+- **entities/**: Contiene las entidades de la base de datos relacionadas.
+- **repositories/**: Contiene los repositorios de datos para interactuar con la base de datos.
+- **services/**: Contiene los servicios que encapsulan la lógica de negocio.
+- **module.module.ts**: Define el módulo y sus dependencias.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Contribuciones
+
+Si deseas contribuir a este proyecto, por favor sigue estos pasos:
+
+1. Haz un fork del proyecto.
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza los cambios necesarios y haz commit (`git commit -am 'Agrega nueva funcionalidad'`).
+4. Empuja los cambios a la rama (`git push origin feature/nueva-funcionalidad`).
+5. Abre un Pull Request.
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Jean Carlo Urrego](https://jeandeveloper.netlify.app/)
 
-## License
+## Licencia
 
-Nest is [MIT licensed](LICENSE).
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más detalles.
