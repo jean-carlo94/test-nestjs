@@ -19,6 +19,11 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    credentials: true,
+    origin: configService.getOrThrow('CLIENTS_ACCESS').split(', '),
+  });
+
   await app.listen(+configService.getOrThrow<number>('PORT'), '0.0.0.0');
   logger.log(`App Running on port ${configService.get<number>('PORT')}`);
 }
