@@ -64,6 +64,15 @@ export class ClassesRepository extends BaseRepository {
     return await queryBuilder.getOne();
   }
 
+  async getStudents(classEntity: Class) {
+    const queryBuilder = this.classRepository
+      .createQueryBuilder(this.Model)
+      .leftJoinAndSelect(`${this.Model}.students`, 'students')
+      .where(`${this.Model}.id =:id`, { id: classEntity.id });
+
+    return await queryBuilder.getOne();
+  }
+
   async searchExist(name: string, id: number = null) {
     const queryBuilder = this.classRepository
       .createQueryBuilder(this.Model)

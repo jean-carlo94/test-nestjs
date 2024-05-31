@@ -10,6 +10,8 @@ import { ClassDto, CreateClassDto, UpdateClassDto } from '../dto';
 
 import { Teacher } from 'src/modules/teachers/entities';
 import { TeacherDto } from 'src/modules/teachers/dto';
+import { Student } from 'src/modules/students/entities';
+import { StudentDto } from 'src/modules/students/dto';
 
 @Injectable()
 export class ClassesService {
@@ -82,6 +84,30 @@ export class ClassesService {
     const getTeacherClass = await this.repository.getTeacher(classEntity);
 
     return this.classesMapper.map(getTeacherClass.teacher, Teacher, TeacherDto);
+  }
+
+  async addStudent(classDto: ClassDto, studentDto: StudentDto) {
+    const classEntity = this.classesMapper.map(classDto, ClassDto, Class);
+    const student = this.classesMapper.map(studentDto, StudentDto, Student);
+
+    const getStudentsClass = await this.repository.getStudents(classEntity);
+
+    classEntity.students = [...getStudentsClass.students, student];
+
+    const classStudent = await this.repository.update(classEntity);
+
+    return this.classesMapper.map(classStudent, Class, ClassDto);
+  }
+
+  async findStudents(classDto: ClassDto) {
+    const classEntity = this.classesMapper.map(classDto, ClassDto, Class);
+    const getStudentsClass = await this.repository.getStudents(classEntity);
+
+    return this.classesMapper.mapArray(
+      getStudentsClass.students,
+      Student,
+      StudentDto,
+    );
   }
 
   async validateInsert(createClassDto: CreateClassDto): Promise<void> {

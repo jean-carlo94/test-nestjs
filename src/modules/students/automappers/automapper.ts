@@ -13,8 +13,11 @@ export class StudentProfile extends AutomapperProfile {
 
   override get profile() {
     return (mapper) => {
-      //Entity
+      //Entity to DTO
       createMap(mapper, Student, StudentDto);
+
+      //DTO to Entity
+      createMap(mapper, StudentDto, Student);
 
       //Create
       createMap(

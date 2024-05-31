@@ -20,12 +20,15 @@ import { ClassDto, CreateClassDto, UpdateClassDto } from '../dto';
 
 import { TeachersService } from 'src/modules/teachers/services';
 import { UpdateTeacherDto } from 'src/modules/teachers/dto';
+import { UpdateStudentDto } from 'src/modules/students/dto';
+import { StudentsService } from 'src/modules/students/services';
 
 @Controller('classes')
 export class ClassesController {
   constructor(
     private readonly classesService: ClassesService,
     private readonly teachersService: TeachersService,
+    private readonly studentsService: StudentsService,
   ) {}
 
   @Get()
@@ -125,12 +128,35 @@ export class ClassesController {
   }
 
   @Post(':id/assign-students')
-  async assignStudent() {
-    return 'ok';
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async assignStudent(
+    @Param('id') id: string,
+    @Body() updateStudentDto: UpdateStudentDto,
+  ) {
+    const classEntity = await this.classesService.findOne(+id);
+
+    if (!classEntity) {
+      throw new NotFoundException('Class by id not found');
+    }
+
+    const student = await this.studentsService.findOne(updateStudentDto.id);
+
+    if (!student) {
+      throw new NotFoundException('Student by id not found');
+    }
+
+    await this.classesService.addStudent(classEntity, student);
+    return;
   }
 
   @Get(':id/assign-students')
-  async findStudent() {
-    return 'ok';
+  async findStudent(@Param('id') id: string) {
+    const classEntity = await this.classesService.findOne(+id);
+
+    if (!classEntity) {
+      throw new NotFoundException('Class by id not found');
+    }
+
+    return await this.classesService.findStudents(classEntity);
   }
 }
